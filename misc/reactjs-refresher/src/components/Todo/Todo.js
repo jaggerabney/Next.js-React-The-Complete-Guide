@@ -1,17 +1,32 @@
+import { useState } from "react";
+
+import Modal from "../Modal/Modal";
+import Backdrop from "../Backdrop/Backdrop";
+
 function Todo(props) {
+  const [showModal, setShowModal] = useState(false);
+
   function deleteHandler() {
-    console.log(`"${props.text}" button clicked!`);
+    setShowModal(true);
   }
 
   return (
-    <div className="card">
-      <h2>{props.text}</h2>
-      <div className="actions">
-        <button className="btn" onClick={deleteHandler}>
-          Delete
-        </button>
+    <>
+      <div className="card">
+        <h2>{props.text}</h2>
+        <div className="actions">
+          <button className="btn" onClick={deleteHandler}>
+            Delete
+          </button>
+        </div>
       </div>
-    </div>
+      {showModal && (
+        <>
+          <Modal />
+          <Backdrop />
+        </>
+      )}
+    </>
   );
 }
 
