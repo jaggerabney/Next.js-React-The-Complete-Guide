@@ -1,14 +1,20 @@
+import { useHistory } from "react-router-dom";
+
 import NewMeetupForm from "../../components/layout/NewMeetupForm/NewMeetupForm";
 
 function NewMeetupPage() {
-  function newMeetupHandler(meetup) {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/meetups.json`, {
+  const history = useHistory();
+
+  async function newMeetupHandler(meetup) {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/meetups.json`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(meetup),
     });
+
+    history.replace("/");
   }
 
   return (
