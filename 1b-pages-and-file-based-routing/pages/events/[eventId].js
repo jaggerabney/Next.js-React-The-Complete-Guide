@@ -11,7 +11,16 @@ function EventDetailPage() {
   const event = getEventById(eventId);
 
   if (!event) {
-    return <p>No event found!</p>;
+    return (
+      <>
+        <ErrorAlert>
+          <p>No event found!</p>
+        </ErrorAlert>
+        <div className="centered">
+          <Button link="/events">Show all events</Button>
+        </div>
+      </>
+    );
   }
 
   return (

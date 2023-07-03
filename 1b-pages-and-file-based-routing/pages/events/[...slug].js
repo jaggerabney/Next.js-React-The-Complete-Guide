@@ -11,7 +11,11 @@ function FilteredEventsPage() {
   const filterData = router.query.slug;
 
   if (!filterData) {
-    return <p className="center">Loading...</p>;
+    return (
+      <p style={{ marginTop: 32 }} className="centered">
+        Loading...
+      </p>
+    );
   }
 
   const [yearAsString, monthAsString] = filterData;
@@ -26,7 +30,16 @@ function FilteredEventsPage() {
     month < 1 ||
     month > 12
   ) {
-    return <p className="center">Invalid filter. Please adjust your values!</p>;
+    return (
+      <>
+        <ErrorAlert>
+          <p>Invalid filter. Please adjust your values!</p>
+        </ErrorAlert>
+        <div className="centered">
+          <Button link="/events">Show all events</Button>
+        </div>
+      </>
+    );
   }
 
   const filteredEvents = getFilteredEvents({ year, month });
