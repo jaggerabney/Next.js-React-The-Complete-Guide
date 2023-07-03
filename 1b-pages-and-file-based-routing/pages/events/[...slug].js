@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 
 import { getFilteredEvents } from "../../dummy-data";
 import EventList from "../../components/events/EventList/EventList";
+import ResultsTitle from "../../components/events/ResultsTitle/ResultsTitle";
 
 function FilteredEventsPage() {
   const router = useRouter();
@@ -27,12 +28,18 @@ function FilteredEventsPage() {
   }
 
   const filteredEvents = getFilteredEvents({ year, month });
+  const date = new Date(year, month - 1);
 
   if (!filteredEvents || filteredEvents.length < 1) {
     return <p>No events found for the given filter!</p>;
   }
 
-  return <EventList events={filteredEvents} />;
+  return (
+    <>
+      <ResultsTitle date={date} />
+      <EventList events={filteredEvents} />
+    </>
+  );
 }
 
 export default FilteredEventsPage;
