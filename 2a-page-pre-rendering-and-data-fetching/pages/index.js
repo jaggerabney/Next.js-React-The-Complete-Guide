@@ -16,10 +16,23 @@ export async function getStaticProps() {
   const fileData = await fs.readFile(filePath);
   const dummyData = JSON.parse(fileData);
 
+  if (!dummyData) {
+    return {
+      redirect: {
+        destination: "/no-data",
+      },
+    };
+  }
+
+  if (dummyData.products.length < 1) {
+    return { notFound: true };
+  }
+
   return {
     props: {
       products: dummyData.products,
     },
+    revalidate: 10,
   };
 }
 
