@@ -1,4 +1,4 @@
-function HomePage(props) {
+function HomePage({ products }) {
   return (
     <ul>
       <li>Product 1</li>
@@ -6,6 +6,14 @@ function HomePage(props) {
       <li>Product 3</li>
     </ul>
   );
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      products: [{ id: "p1", title: "Product 1" }],
+    },
+  };
 }
 
 export default HomePage;
