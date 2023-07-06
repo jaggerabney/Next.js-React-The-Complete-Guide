@@ -1,12 +1,16 @@
 import fs from "fs/promises";
 import path from "path";
 
+import Link from "next/link";
+
 function HomePage({ products }) {
   return (
     <ul>
-      <li>Product 1</li>
-      <li>Product 2</li>
-      <li>Product 3</li>
+      {products.map((product) => (
+        <li>
+          <Link href={`/${product.id}`}>{product.title}</Link>
+        </li>
+      ))}
     </ul>
   );
 }
