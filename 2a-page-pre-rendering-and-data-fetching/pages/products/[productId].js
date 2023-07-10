@@ -22,8 +22,8 @@ async function getDummyData() {
   return dummyData;
 }
 
-export async function getStaticProps(context) {
-  const productId = context.params.productId;
+export async function getStaticProps({ params }) {
+  const productId = params.productId;
   const dummyData = await getDummyData();
 
   const product = dummyData.products.find((item) => item.id === productId);
