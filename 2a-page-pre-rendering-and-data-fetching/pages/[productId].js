@@ -14,13 +14,18 @@ function ProductDetailPage({ product }) {
   );
 }
 
-export async function getStaticProps(context) {
-  const { params } = context;
-  const productId = params.productId;
-
+async function getDummyData() {
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const fileData = await fs.readFile(filePath);
   const dummyData = JSON.parse(fileData);
+
+  return dummyData;
+}
+
+export async function getStaticProps(context) {
+  const { params } = context;
+  const productId = params.productId;
+  const dummyData = await getDummyData();
 
   const product = dummyData.products.find((item) => item.id === productId);
 
@@ -32,12 +37,13 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
+  const dummyData = await getDummyData();
+  const paths = dummyData.products.map((product) => ({
+    params: { productId: product.id },
+  }));
+
   return {
-    paths: [
-      { params: { productId: "p1" } },
-      { params: { productId: "p2" } },
-      { params: { productId: "p3" } },
-    ],
+    paths,
     fallback: "blocking",
   };
 }
