@@ -23,16 +23,17 @@ async function getDummyData() {
 }
 
 export async function getStaticProps(context) {
-  const { params } = context;
-  const productId = params.productId;
+  const productId = context.params.productId;
   const dummyData = await getDummyData();
 
   const product = dummyData.products.find((item) => item.id === productId);
 
+  if (!product) {
+    return { notFound: true };
+  }
+
   return {
-    props: {
-      product,
-    },
+    props: { product },
   };
 }
 
@@ -44,7 +45,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: "blocking",
+    fallback: true,
   };
 }
 
