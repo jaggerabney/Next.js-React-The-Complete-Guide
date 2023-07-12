@@ -1,31 +1,56 @@
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 
 function LastSalesPage() {
   const [sales, setSales] = useState();
-  const [isLoading, setIsLoading] = useState();
+  // const [isLoading, setIsLoading] = useState();
+
+  const { data, error } = useSWR(process.env.NEXT_PUBLIC_BACKEND_URL, (url) =>
+    fetch(url).then((res) => res.json())
+  );
 
   useEffect(() => {
-    setIsLoading(true);
+    if (data) {
+      const formattedSales = [];
 
-    fetch(process.env.NEXT_PUBLIC_BACKEND_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        const formattedSales = [];
+      for (const key in data) {
+        formattedSales.push({
+          id: key,
+          username: data[key].username,
+          volume: data[key].volume,
+        });
+      }
 
-        for (const key in data) {
-          formattedSales.push({
-            id: key,
-            username: data[key].username,
-            volume: data[key].volume,
-          });
-        }
+      setSales(formattedSales);
+    }
+  }, [data]);
 
-        setSales(formattedSales);
-        setIsLoading(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   setIsLoading(true);
 
-  if (!sales || isLoading) {
+  //   fetch(process.env.NEXT_PUBLIC_BACKEND_URL)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       const formattedSales = [];
+
+  //       for (const key in data) {
+  //         formattedSales.push({
+  //           id: key,
+  //           username: data[key].username,
+  //           volume: data[key].volume,
+  //         });
+  //       }
+
+  //       setSales(formattedSales);
+  //       setIsLoading(false);
+  //     });
+  // }, []);
+
+  if (error) {
+    return <p>Failed to load data.</p>;
+  }
+
+  if (!data || !sales) {
     return <p>Loading...</p>;
   }
 
