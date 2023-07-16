@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 
 import EventList from "../../components/events/event-list";
@@ -10,6 +11,15 @@ function FilteredEventsPage({ hasError, events, date }) {
   const router = useRouter();
 
   const filterData = router.query.slug;
+  const headContent = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for ${date.month}/${date.year}`}
+      />
+    </Head>
+  );
 
   if (!filterData) {
     return <p className="center">Loading...</p>;
@@ -18,6 +28,7 @@ function FilteredEventsPage({ hasError, events, date }) {
   if (hasError) {
     return (
       <>
+        {headContent}
         <ErrorAlert>
           <p>Invalid filter. Please adjust your values!</p>
         </ErrorAlert>
@@ -31,6 +42,7 @@ function FilteredEventsPage({ hasError, events, date }) {
   if (!events || events.length === 0) {
     return (
       <>
+        {headContent}
         <ErrorAlert>
           <p>No events found for the chosen filter!</p>
         </ErrorAlert>
@@ -45,6 +57,7 @@ function FilteredEventsPage({ hasError, events, date }) {
 
   return (
     <>
+      {headContent}
       <ResultsTitle date={filteredDate} />
       <EventList items={events} />
     </>
