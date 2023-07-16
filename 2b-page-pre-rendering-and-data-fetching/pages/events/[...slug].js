@@ -16,13 +16,18 @@ function FilteredEventsPage({ hasError, events, date }) {
       <title>Filtered Events</title>
       <meta
         name="description"
-        content={`All events for ${date.month}/${date.year}`}
+        content={`All events for the given year and month.`}
       />
     </Head>
   );
 
   if (!filterData) {
-    return <p className="center">Loading...</p>;
+    return (
+      <>
+        {headContent}
+        <p className="center">Loading...</p>
+      </>
+    );
   }
 
   if (hasError) {
