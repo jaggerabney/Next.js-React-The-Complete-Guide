@@ -1,11 +1,11 @@
 import fs from "fs";
 import path from "path";
 
-function getFeedbackFilePath() {
+export function getFeedbackFilePath() {
   return path.join(process.cwd(), "data", "feedback.json");
 }
 
-function getAllFeedback() {
+export function getAllFeedback() {
   const filePath = getFeedbackFilePath();
   const data = fs.readFileSync(filePath);
   const allFeedback = JSON.parse(data);
@@ -13,7 +13,7 @@ function getAllFeedback() {
   return allFeedback;
 }
 
-function handler(req, res) {
+export default function handler(req, res) {
   if (req.method === "POST") {
     const { email, feedback } = req.body;
 
@@ -36,5 +36,3 @@ function handler(req, res) {
     res.status(200).json({ message: "Feedback retrieved!", feedback });
   }
 }
-
-export default handler;
