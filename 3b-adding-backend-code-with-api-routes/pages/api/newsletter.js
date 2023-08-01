@@ -1,19 +1,34 @@
-import { MongoClient } from "mongodb";
+import { getDb } from "../../helpers/db-util";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const { email } = req.body;
+    let db;
 
     if (!email || !email.includes("@")) {
       return res.status(422).json({ message: "Invalid email!" });
     }
 
-    const client = await MongoClient.connect(process.env.DB_CONNECTION_STRING);
-    const db = client.db();
+    try {
+      db = await getDb();
+    } catch (err) {
+      console.log(err);
 
-    await db.collection("newsletter").insertOne({ email });
+      return res
+        .status(500)
+        .json({ message: "Connecting to the database failed!" });
+    }
 
-    await client.close();
+    try {
+      await db.collection("newsletter").insertOne({ email });
+    } catch (err) {
+      console.log(err);
+
+      return res
+        .status(500)
+        .json({ message: "Couldn't insert email into database!" });
+    }
+
     res.status(201).json({ message: "Email added to newsletter!" });
   }
 }

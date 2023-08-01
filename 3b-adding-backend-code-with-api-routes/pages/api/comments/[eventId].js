@@ -1,12 +1,11 @@
-import { MongoClient } from "mongodb";
+import { getDb } from "../../../helpers/db-util";
 
 export default async function handler(req, res) {
   const { eventId } = req.query;
-  let client, db;
+  let db;
 
   try {
-    client = await MongoClient.connect(process.env.DB_CONNECTION_STRING);
-    db = client.db();
+    db = await getDb();
   } catch (err) {
     console.log(err);
 
@@ -65,11 +64,9 @@ export default async function handler(req, res) {
 
       return res
         .status(500)
-        .json({ message: "Couldnt' fetch comments from database!" });
+        .json({ message: "Couldn't fetch comments from database!" });
     }
 
     res.status(200).json({ comments });
   }
-
-  client.close();
 }
