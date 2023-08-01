@@ -18,8 +18,6 @@ export function FavoritesContextProvider(props) {
     isFavorite: itemIsFavoriteHandler,
   };
 
-  console.log(favorites);
-
   function addFavoriteHandler(favorite) {
     setFavorites((prevFavorites) => prevFavorites.concat(favorite));
   }

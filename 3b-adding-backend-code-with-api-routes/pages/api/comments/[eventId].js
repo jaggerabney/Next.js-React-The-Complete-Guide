@@ -20,10 +20,10 @@ export default async function handler(req, res) {
     }
 
     const newComment = {
+      eventId,
       email,
       name,
       text,
-      eventId,
     };
 
     const result = await db.collection("comments").insertOne(newComment);
@@ -34,21 +34,12 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
-    const dummyComments = [
-      {
-        id: "c1",
-        name: "Jagger",
-        email: "test@test.com",
-        text: "A first comment!",
-      },
-      {
-        id: "c2",
-        name: "Kira",
-        email: "test2@test.com",
-        text: "A second comment!",
-      },
-    ];
+    const comments = await db
+      .collection("comments")
+      .find()
+      .sort({ _id: -1 })
+      .toArray();
 
-    res.status(200).json({ comments: dummyComments });
+    res.status(200).json({ comments });
   }
 }
