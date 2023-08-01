@@ -2,9 +2,18 @@ import { MongoClient } from "mongodb";
 
 export default async function handler(req, res) {
   const { eventId } = req.query;
+  let client, db;
 
-  const client = await MongoClient.connect(process.env.DB_CONNECTION_STRING);
-  const db = client.db();
+  try {
+    client = await MongoClient.connect(process.env.DB_CONNECTION_STRING);
+    db = client.db();
+  } catch (err) {
+    console.log(err);
+
+    return res
+      .status(500)
+      .json({ message: "Connecting to the database failed!" });
+  }
 
   if (req.method === "POST") {
     const { email, name, text } = req.body;
@@ -25,8 +34,17 @@ export default async function handler(req, res) {
       name,
       text,
     };
+    let result;
 
-    const result = await db.collection("comments").insertOne(newComment);
+    try {
+      result = await db.collection("comments").insertOne(newComment);
+    } catch (err) {
+      console.log(err);
+
+      return res
+        .status(500)
+        .json({ message: "Couldn't insert comment into database!" });
+    }
 
     res
       .status(201)
@@ -34,12 +52,24 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "GET") {
-    const comments = await db
-      .collection("comments")
-      .find()
-      .sort({ _id: -1 })
-      .toArray();
+    let comments;
+
+    try {
+      comments = await db
+        .collection("comments")
+        .find()
+        .sort({ _id: -1 })
+        .toArray();
+    } catch (err) {
+      console.log(err);
+
+      return res
+        .status(500)
+        .json({ message: "Couldnt' fetch comments from database!" });
+    }
 
     res.status(200).json({ comments });
   }
+
+  client.close();
 }
