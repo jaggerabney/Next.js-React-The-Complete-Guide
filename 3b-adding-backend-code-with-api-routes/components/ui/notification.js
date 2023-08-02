@@ -1,31 +1,31 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
-// import NotificationContext from "../../store/notification-context";
+import NotificationContext from "../../store/notification-context";
 
 import classes from "./notification.module.css";
 
-function Notification({ title, message, status }) {
-  //   const notificationCtx = useContext(NotificationContext);
+function Notification() {
+  const { notification, hideNotification } = useContext(NotificationContext);
   let statusClasses = "";
 
-  if (status === "success") {
+  if (notification.status === "success") {
     statusClasses = classes.success;
   }
 
-  if (status === "error") {
+  if (notification.status === "error") {
     statusClasses = classes.error;
   }
 
-  if (status === "pending") {
+  if (notification.status === "pending") {
     statusClasses = classes.pending;
   }
 
   const activeClasses = `${classes.notification} ${statusClasses}`;
 
   return (
-    <div className={activeClasses} onClick={() => {}}>
-      <h2>{title}</h2>
-      <p>{message}</p>
+    <div className={activeClasses} onClick={hideNotification}>
+      <h2>{notification.title}</h2>
+      <p>{notification.message}</p>
     </div>
   );
 }
