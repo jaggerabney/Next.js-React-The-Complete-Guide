@@ -56,7 +56,7 @@ export default async function handler(req, res) {
     try {
       comments = await db
         .collection("comments")
-        .find()
+        .find({ eventId })
         .sort({ _id: -1 })
         .toArray();
     } catch (err) {
