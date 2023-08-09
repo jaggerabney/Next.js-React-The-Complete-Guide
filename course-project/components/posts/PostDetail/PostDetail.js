@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import ReactMarkdown from "react-markdown";
+
 import classes from "./PostDetail.module.css";
 
 const DUMMY_POST = {
@@ -11,7 +13,11 @@ const DUMMY_POST = {
 };
 
 function PostContent({ content }) {
-  return <article>{content}</article>;
+  return (
+    <article>
+      <ReactMarkdown>{content}</ReactMarkdown>
+    </article>
+  );
 }
 
 function PostHeader({ title, image }) {
