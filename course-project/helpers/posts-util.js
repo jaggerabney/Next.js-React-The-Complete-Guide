@@ -3,7 +3,7 @@ import path from "path";
 
 import matter from "gray-matter";
 
-const postsDirectory = path.join(process.cwd(), "posts");
+const postsDirectory = path.join(process.cwd(), "content", "posts");
 
 function getPostData(fileName) {
   const filePath = path.join(postsDirectory, fileName);
@@ -12,7 +12,7 @@ function getPostData(fileName) {
 
   const { data, content } = matter(fileData);
 
-  return { slug, data, content };
+  return { slug, ...data, content };
 }
 
 export function getAllPosts() {
