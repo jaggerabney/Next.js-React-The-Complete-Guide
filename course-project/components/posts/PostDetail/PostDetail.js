@@ -4,14 +4,6 @@ import ReactMarkdown from "react-markdown";
 
 import classes from "./PostDetail.module.css";
 
-const DUMMY_POST = {
-  slug: "getting-started-with-nextjs1",
-  title: "Getting Started with Next.js",
-  image: "getting-started-nextjs.png",
-  content: "# This is a first post!",
-  date: "2023-08-09",
-};
-
 function PostContent({ content }) {
   return (
     <article>
@@ -29,13 +21,13 @@ function PostHeader({ title, image }) {
   );
 }
 
-export default function PostDetail() {
-  const imagePath = `/images/posts/${DUMMY_POST.slug}/${DUMMY_POST.image}`;
+export default function PostDetail({ post }) {
+  const imagePath = `/images/posts/${post.slug}/${post.image}`;
 
   return (
     <div className={classes.content}>
-      <PostHeader title={DUMMY_POST.title} image={imagePath} />
-      <PostContent content={DUMMY_POST.content} />
+      <PostHeader title={post.title} image={imagePath} />
+      <PostContent content={post.content} />
     </div>
   );
 }
