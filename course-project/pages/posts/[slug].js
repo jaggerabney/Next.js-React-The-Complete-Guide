@@ -1,8 +1,18 @@
+import Head from "next/head";
+
 import PostDetail from "../../components/posts/PostDetail/PostDetail";
 import { getAllPostFileNames, getPostData } from "../../helpers/posts-util";
 
 export default function PostDetailPage({ post }) {
-  return <PostDetail post={post} />;
+  return (
+    <>
+      <Head>
+        <title>{`Jagger's Blog - ${post.title}`}</title>
+        <meta name="description" content={post.excerpt} />
+      </Head>
+      <PostDetail post={post} />
+    </>
+  );
 }
 
 export async function getStaticProps(context) {
