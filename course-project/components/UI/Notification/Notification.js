@@ -1,17 +1,15 @@
-import ReactDOM from 'react-dom';
-
-import classes from './notification.module.css';
+import classes from "./notification.module.css";
 
 function Notification(props) {
   const { title, message, status } = props;
 
-  let statusClasses = '';
+  let statusClasses = "";
 
-  if (status === 'success') {
+  if (status === "success") {
     statusClasses = classes.success;
   }
 
-  if (status === 'error') {
+  if (status === "error") {
     statusClasses = classes.error;
   }
 

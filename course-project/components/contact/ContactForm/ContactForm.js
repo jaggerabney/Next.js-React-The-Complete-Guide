@@ -3,14 +3,15 @@ import { useState, useRef, useEffect } from "react";
 import Notification from "../../UI/Notification/notification";
 
 import classes from "./ContactForm.module.css";
+import Portal from "../../UI/Portal/Portal";
 
 async function sendContactData(contactData) {
   const response = await fetch("/api/contact", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(contactData)
+    body: JSON.stringify(contactData),
   });
   const data = await response.json();
 
@@ -43,7 +44,7 @@ export default function ContactForm() {
     const message = {
       email: emailRef.current.value,
       name: nameRef.current.value,
-      message: messageRef.current.value
+      message: messageRef.current.value,
     };
 
     setRequestStatus("pending");
@@ -64,19 +65,19 @@ export default function ContactForm() {
     notification = {
       status: "pending",
       title: "Sending message...",
-      message: "Your message is on its way!"
+      message: "Your message is on its way!",
     };
   } else if (requestStatus === "success") {
     notification = {
       status: "success",
       title: "Success!",
-      message: "Message sent successfully!"
+      message: "Message sent successfully!",
     };
   } else if (requestStatus === "error") {
     notification = {
       status: "error",
       title: "Error!",
-      message: requestError
+      message: requestError,
     };
   }
 
@@ -102,13 +103,15 @@ export default function ContactForm() {
           <button type="submit">Submit</button>
         </div>
       </form>
-      {notification && (
-        <Notification
-          status={notification.status}
-          title={notification.title}
-          message={notification.message}
-        />
-      )}
+      <Portal>
+        {notification && (
+          <Notification
+            status={notification.status}
+            title={notification.title}
+            message={notification.message}
+          />
+        )}
+      </Portal>
     </section>
   );
 }
