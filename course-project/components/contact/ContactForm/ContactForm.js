@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-import Notification from "../../UI/Notification/notification";
+import Notification from "../../UI/Notification/Notification";
 
 import classes from "./ContactForm.module.css";
 import Portal from "../../UI/Portal/Portal";
