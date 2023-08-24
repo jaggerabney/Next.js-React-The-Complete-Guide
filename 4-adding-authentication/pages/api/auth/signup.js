@@ -12,11 +12,18 @@ export default async function handler(req, res) {
       !password ||
       password.trim().length < 7
     ) {
-      return res.status(422).json({ message: "Invalid username or password." });
+      return res.status(422).json({ message: "Invalid email or password." });
     }
 
     try {
-      const db = await getDb();
+      const { client, db } = await getDb();
+      const emailAlreadyInUse = await db.collection("users").findOne({ email });
+
+      if (emailAlreadyInUse) {
+        client.close();
+
+        return res.status(422).json({ message: "Invalid email or password." });
+      }
 
       const result = await db.collection("users").insertOne({
         email,
@@ -26,7 +33,11 @@ export default async function handler(req, res) {
       res
         .status(201)
         .json({ message: "Signed up user!", userId: result.insertedId });
+
+      client.close();
     } catch (err) {
+      client.close();
+
       return res.status(500).json({ message: "Couldn't sign up!" });
     }
   }
