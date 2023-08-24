@@ -1,5 +1,7 @@
 import { hash, compare } from "bcrypt";
 
+import { getDb } from "../../../util/db";
+
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const { email, password } = req.body;
@@ -17,6 +19,11 @@ export default async function handler(req, res) {
 
     try {
       ({ client, db } = await getDb());
+    } catch (err) {
+      return res.status(500).json({ message: "Couldn't connect to database!" });
+    }
+
+    try {
       const user = await db.collection("users").findOne({ email });
 
       if (!user) {
@@ -29,9 +36,7 @@ export default async function handler(req, res) {
         return res.status(422).json({ message: "Invalid email or password." });
       }
 
-      res
-        .status(200)
-        .json({ message: "Logged user in!", userId: result.insertedId });
+      res.status(200).json({ message: "Logged user in!" });
     } catch (err) {
       return res.status(500).json({ message: "Couldn't log in!" });
     } finally {

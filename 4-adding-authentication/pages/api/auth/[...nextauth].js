@@ -20,12 +20,14 @@ export default NextAuth({
         },
       },
       async authorize(credentials, req) {
-        const res = await fetch("/api/auth/login", {
+        const res = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
         });
         const user = await res.json();
+
+        console.log(user);
 
         if (res.ok && user) {
           return user;
