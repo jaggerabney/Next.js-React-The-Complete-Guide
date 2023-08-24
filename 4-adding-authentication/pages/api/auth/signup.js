@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       !email ||
       !email.includes("@") ||
       !password ||
-      password.trim().length > 7
+      password.trim().length < 7
     ) {
       return res.status(422).json({ message: "Invalid username or password." });
     }
