@@ -36,7 +36,9 @@ export default async function handler(req, res) {
         return res.status(422).json({ message: "Invalid email or password." });
       }
 
-      res.status(200).json({ message: "Logged user in!" });
+      delete user.password;
+
+      res.status(200).json({ message: "Logged user in!", user });
     } catch (err) {
       return res.status(500).json({ message: "Couldn't log in!" });
     } finally {

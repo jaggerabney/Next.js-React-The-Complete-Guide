@@ -1,4 +1,5 @@
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
 import { hash, compare } from "bcrypt";
 
 import { getDb } from "../../../util/db";
@@ -14,10 +15,10 @@ export default async function handler(req, res) {
 
   // Check request for validity and authentication
   if (!req.method === "PATCH") {
-    return res.status(400).json({ message: "Bad request!" });
+    return res.status(401).json({ message: "Bad request!" });
   }
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
     return res.status(401).json({ message: "Not authenticated!" });

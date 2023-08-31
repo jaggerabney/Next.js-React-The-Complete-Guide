@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     jwt: true,
   },
@@ -25,11 +26,10 @@ export default NextAuth({
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
         });
-        const user = await res.json();
+        const data = await res.json();
+        const user = data.user;
 
-        console.log(user);
-
-        if (res.ok && user) {
+        if (res.ok && data && user) {
           return user;
         }
 
