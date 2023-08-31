@@ -1,4 +1,4 @@
-import { hash, compare } from "bcrypt";
+import { compare } from "bcrypt";
 
 import { getDb } from "../../../util/db";
 
